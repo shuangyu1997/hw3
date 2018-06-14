@@ -77,6 +77,7 @@ def readBraclets(tokens):
     token = {'type': 'Right'}
     tokens.append(token)
     
+    #右括弧を検出して一番近い左括弧を探して中身を計算
     while index < len(tokens):
         if tokens[index]["type"]=="Right":
             index2 = index 
@@ -87,11 +88,10 @@ def readBraclets(tokens):
                     token = {'type': 'NUMBER', 'number': ans}
                     tokens.insert(index+1,token)
                     del tokens[index2:index+1]
-                    a = index2-index+1
-                    index -= a
-               
+                    index=0
+                    break
                 index2 -= 1    
-        if len(tokens) == 1:
+        if len(tokens) < 1:
             break
         index += 1
        
@@ -103,8 +103,6 @@ def keisan(tokens):
     index = 0
     num=0
     
-    
-   
     while index < len(tokens):
         if tokens[index]['type']=='MULTIPLY':
             num=tokens[index-1]['number']*tokens[index+1]['number']
@@ -152,8 +150,11 @@ def runTest():
     test("2*3*4",24)
     test("6/2+2*5",13)
     test("3+2*5",13)
-    test("(3+7)*5",50)
-    test("((1+2*3)+4)*5",55)##これができない
+    test("2*(1+2*3)",14)
+    test("(3+7)*5",50)  
+    test("4+((1+2)+3)",10)
+    test("5*((1+2*3)+4)",55)
+    test("6*((1+2*3)+4)+1",67)
     print ("==== Test finished! ====\n")
 
 runTest()
